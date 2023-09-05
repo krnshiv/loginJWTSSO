@@ -1,23 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
+import LoginWitSSO from './LoginWitSSO';
+import LoginWithJWT from './LoginWithJWT';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import Dashboard from './Dashboard';
+import { useEffect } from 'react';
 
 function App() {
+  const isAuthenticated = !!localStorage.getItem('token')
+    const username = localStorage.getItem('name')
+
+const navigate = useNavigate()
+    useEffect(()=>{
+      if(isAuthenticated) {navigate('/dashboard')} else {
+        navigate('/')
+      }
+    },[])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route exact path='/' element={<LoginWitSSO/>}/>
+        <Route exact path='/dashboard' element={<Dashboard/>}/>
+      </Routes>
+     
     </div>
   );
 }
